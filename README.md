@@ -6,4 +6,6 @@ Python scripts to harvest data are in the `scripts` directory. The resulting dat
 
 The data can be queried using [Datasette](https://github.com/simonw/datasette) at: [nyperfp-demo-datasette.now.sh](https://nyerfp-demo-datasette.now.sh/).
 
+This post has more details: [lawlesst.github.io/notebook/nyer-fiction.html](http://lawlesst.github.io/notebook/nyer-fiction.html)
+
 This code was written and run with Python 3.
