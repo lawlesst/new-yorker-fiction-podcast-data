@@ -11,11 +11,11 @@ import requests_cache
 from bs4 import BeautifulSoup
 
 try:
-    cache = requests_cache.install_cache('nyer')
+    cache = requests_cache.install_cache('data/nyer')
 except ImportError:
     eprint("Continuing without requests cache")
 
-pages = 13
+pages = 15
 
 wd = "https://www.wikidata.org/w/api.php?action=wbsearchentities&language=en&format=json&search="
 

@@ -9,3 +9,12 @@ The data can be queried using [Datasette](https://github.com/simonw/datasette) a
 This post has more details: [lawlesst.github.io/notebook/nyer-fiction.html](http://lawlesst.github.io/notebook/nyer-fiction.html)
 
 This code was written and run with Python 3.
+
+## Updating
+New episodes can be harvested and an updated Datasette can be published with the following steps:
+
+* `python scripts/harvest.py > data/episodes.csv`
+* `python scripts/wd_details.py data/episodes.csv data/people.csv`
+* `csvs-to-sqlite -s'|' data/episodes.csv data/people.csv nyer-fiction-podcast.db`
+* `datasette publish -m metadata.json now nyer-fiction-podcast.db`
+* Alias this now instance id to a domain name, e.g: `now alias datasette-xxx.now.sh nyerfp-demo-datasette`
