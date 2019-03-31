@@ -28,7 +28,8 @@ known = {
     'e-l-doctorow-reads-john-ohara': {"writer_wikidata": "Q548345"},
     'marisa-silver-reads-peter-taylor': {"writer_wikidata": "Q979076"},
     'karl-ove-knausgaard-reads-v-s-naipaul': {"reader_wikidata" :'Q609317'},
-    'joseph-oneill-reads-muriel-spark': {"reader_wikidata": "Q151708"}
+    'joseph-oneill-reads-muriel-spark': {"reader_wikidata": "Q151708"},
+    'dave-eggers-reads-sam-shepard': {"writer_wikidata": "Q294583"}
     #'': {"writer_wikidata": ""}
 }
 
