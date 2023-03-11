@@ -1,19 +1,19 @@
 """
-Fetch various details from Wikidata via sparql.
+Fetch various details from Wikidata via SPARQL.
 """
 
 
+import csv
 import json
 import sys
-import csv
 
-
-from SPARQLWrapper import SPARQLWrapper, JSON
+from SPARQLWrapper import JSON, SPARQLWrapper
 
 sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
+
 def eprint(*args, **kwargs):
-    #https://stackoverflow.com/a/14981125/758157
+    # https://stackoverflow.com/a/14981125/758157
     print(*args, file=sys.stderr, **kwargs)
 
 
@@ -73,14 +73,19 @@ if __name__ == "__main__":
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
 
-    columns = results['head']['vars']
+    columns = results["head"]["vars"]
 
-    with open(sys.argv[2], 'w') as outf:
+    resolved_wids = []
+
+    with open(sys.argv[2], "w") as outf:
         writer = csv.DictWriter(outf, delimiter="|", fieldnames=columns)
         writer.writeheader()
 
         for row in results["results"]["bindings"]:
+            if row["wid"] in resolved_wids:
+                continue
             d = {}
             for c in columns:
-                d[c] = row.get(c, {}).get('value')
+                d[c] = row.get(c, {}).get("value")
             writer.writerow(d)
+            resolved_wids.append(row["wid"])
