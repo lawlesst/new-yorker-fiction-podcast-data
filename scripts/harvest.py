@@ -72,6 +72,7 @@ def get_wikidata(person):
 def get_reader_writer(title):
     """Helper to parse out the reader and the writer from the
     podcast title."""
+    title = title.replace(", Live", "")
     chunked = re.split("reads|discusses", title.lower())
     reader = chunked[0].strip()
     try:
@@ -92,27 +93,28 @@ def get_page(num):
     """
     Parse the list of episodes from newyorker.com.
     """
-    base = "https://www.newyorker.com/podcast/fiction/page/"
-    rsp = requests.get(base + str(num))
+    url = f"https://www.newyorker.com/podcast/fiction?page={num}"
+    rsp = requests.get(url)
     soup = BeautifulSoup(rsp.text, "html.parser")
     out = []
-    for pod in soup.find_all("li", class_="River__riverItem___3huWr"):
+
+    pods = soup.find_all("h3")
+    for pod in pods:
         meta = {}
-        partial = pod.find("a", class_="Link__link___3dWao").attrs["href"]
+        partial = pod.find_previous("a").attrs["href"]
         pid = partial.split("/")[-1]
         if pid in skip:
             continue
         meta["id"] = pid
         meta["url"] = "https://www.newyorker.com" + partial
-        meta["title"] = pod.find("h4").text
+        meta["title"] = pod.text
         try:
-            summary = pod.find("h5", class_="River__dek___CayIg").text
+            summary = pod.find_next("div", class_="summary-item__dek").text
         except AttributeError:
             summary = None
         meta["summary"] = summary
-
         meta["date_published"] = datetime.strptime(
-            pod.find("h6", class_="River__publishDate___1fSSK").text,
+            pod.find_next("time").text,
             "%B %d, %Y",
         ).date()
         # Use the manual tweaks from above.
@@ -143,7 +145,7 @@ if __name__ == "__main__":
         if page_num == 1:
             header = [k for k in details[0].keys()]
             writer = csv.DictWriter(
-                sys.stdout, fieldnames=header, delimiter="|"
+                sys.stdout, fieldnames=header, delimiter="|", lineterminator="\n"
             )
             writer.writeheader()
         for pod in details:

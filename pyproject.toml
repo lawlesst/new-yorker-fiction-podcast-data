@@ -16,6 +16,9 @@ datasette = "^0.63"
 csvs-to-sqlite = "^1.3"
 
 
+[tool.poetry.group.dev.dependencies]
+ipdb = "^0.13.13"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
