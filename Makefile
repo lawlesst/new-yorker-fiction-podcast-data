@@ -14,6 +14,8 @@ harvest:
 wikidata:
 	$ poetry run python scripts/wd_details.py $(episodes) $(people)
 
+refresh_data: harvest wikidata
+
 build_datasette_db:
 	$ poetry run csvs-to-sqlite -s'|' $(episodes) $(people) $(database)
 
