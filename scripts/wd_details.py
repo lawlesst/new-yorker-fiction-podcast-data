@@ -63,7 +63,7 @@ def gv(row, _key):
 if __name__ == "__main__":
     wd_ids = []
     with open(sys.argv[1]) as infile:
-        for row in csv.DictReader(infile, delimiter="|"):
+        for row in csv.DictReader(infile, delimiter=","):
             for wtype in ["reader_wikidata", "writer_wikidata"]:
                 wd_ids.append("wd:{}".format(row[wtype]))
     query = rq.replace("--ids--", " ".join(wd_ids))
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     out = []
 
     with open(sys.argv[2], "w") as outf:
-        writer = csv.DictWriter(outf, delimiter="|", fieldnames=columns)
+        writer = csv.DictWriter(outf, delimiter=",", fieldnames=columns)
         writer.writeheader()
 
         for row in results["results"]["bindings"]:

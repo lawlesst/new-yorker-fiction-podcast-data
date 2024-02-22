@@ -154,7 +154,7 @@ if __name__ == "__main__":
     
     episodes = sorted(episodes, key=lambda x: x["date_published"], reverse=True)
     writer = csv.DictWriter(
-                sys.stdout, fieldnames=header, delimiter="|", lineterminator="\n"
+                sys.stdout, fieldnames=header, delimiter=",", lineterminator="\n"
     )
     writer.writeheader()
     for episode in episodes:

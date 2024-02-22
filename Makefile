@@ -17,7 +17,7 @@ wikidata:
 refresh_data: harvest wikidata
 
 build_datasette_db:
-	$ poetry run csvs-to-sqlite -s'|' $(episodes) $(people) $(database)
+	$ poetry run csvs-to-sqlite -s',' $(episodes) $(people) $(database)
 
 get_data: harvest wikidata build_datasette_db
 
