@@ -2,14 +2,17 @@ import csv
 import re
 import sys
 import urllib
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import requests_cache
 from bs4 import BeautifulSoup
 
+cache = True
+
+
 try:
-    cache = requests_cache.install_cache("data/nyer")
+    cache = requests_cache.install_cache("data/nyer", expire_after=timedelta(days=7))
 except ImportError:
     print("Continuing without requests cache", file=sys.stderr)
 
@@ -136,6 +139,7 @@ def get_page(num):
 if __name__ == "__main__":
     out = []
     page_num = 1
+    episodes = []
     while True:
         eprint(f"Getting page {page_num}.")
         details = get_page(page_num)
@@ -144,10 +148,15 @@ if __name__ == "__main__":
             break
         if page_num == 1:
             header = [k for k in details[0].keys()]
-            writer = csv.DictWriter(
-                sys.stdout, fieldnames=header, delimiter="|", lineterminator="\n"
-            )
-            writer.writeheader()
         for pod in details:
-            writer.writerow(pod)
+            episodes.append(pod)
         page_num += 1
+    
+    episodes = sorted(episodes, key=lambda x: x["date_published"], reverse=True)
+    writer = csv.DictWriter(
+                sys.stdout, fieldnames=header, delimiter="|", lineterminator="\n"
+    )
+    writer.writeheader()
+    for episode in episodes:
+        writer.writerow(episode)
+    
