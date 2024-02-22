@@ -4,7 +4,6 @@ Fetch various details from Wikidata via SPARQL.
 
 
 import csv
-import json
 import sys
 
 from SPARQLWrapper import JSON, SPARQLWrapper
@@ -76,6 +75,7 @@ if __name__ == "__main__":
     columns = results["head"]["vars"]
 
     resolved_wids = []
+    out = []
 
     with open(sys.argv[2], "w") as outf:
         writer = csv.DictWriter(outf, delimiter="|", fieldnames=columns)
@@ -87,5 +87,9 @@ if __name__ == "__main__":
             d = {}
             for c in columns:
                 d[c] = row.get(c, {}).get("value")
-            writer.writerow(d)
+            out.append(d)
             resolved_wids.append(row["wid"])
+        
+        for row in sorted(out, key=lambda x: x["wid"]):
+            writer.writerow(row)
+            writer.writerow(row)
